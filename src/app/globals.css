@@ -56,61 +56,84 @@
 
 /* Glass card effect */
 .glass-card {
-  @apply bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-2xl;
+  background-color: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 1rem;
 }
 
 .glass-card-hover {
-  @apply glass-card transition-all duration-200 hover:bg-white/[0.05] hover:border-white/[0.1];
+  background-color: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 1rem;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+}
+
+.glass-card-hover:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 /* Terminal styles */
 .terminal {
-  @apply font-mono text-xs leading-relaxed;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.75rem;
+  line-height: 1.625;
 }
 
 .terminal-line {
-  @apply flex items-start gap-2;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
 }
 
 .terminal-timestamp {
-  @apply text-muted-foreground shrink-0;
+  color: hsl(var(--muted-foreground));
+  flex-shrink: 0;
 }
 
 .terminal-level {
-  @apply shrink-0 font-medium;
+  flex-shrink: 0;
+  font-weight: 500;
 }
 
 .terminal-level.info {
-  @apply text-blue-400;
+  color: #60a5fa;
 }
 
 .terminal-level.success {
-  @apply text-emerald-400;
+  color: #34d399;
 }
 
 .terminal-level.warn {
-  @apply text-amber-400;
+  color: #fbbf24;
 }
 
 .terminal-level.error {
-  @apply text-rose-400;
+  color: #f87171;
 }
 
 /* Status indicators */
 .status-dot {
-  @apply w-2 h-2 rounded-full;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
 }
 
 .status-dot.online {
-  @apply bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)];
+  background-color: #10b981;
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.5);
 }
 
 .status-dot.idle {
-  @apply bg-amber-500;
+  background-color: #f59e0b;
 }
 
 .status-dot.offline {
-  @apply bg-slate-500;
+  background-color: #64748b;
 }
 
 .status-dot.active {
@@ -119,29 +142,59 @@
 
 /* Kanban styles */
 .kanban-column {
-  @apply flex flex-col gap-3 min-w-[280px] max-w-[320px];
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 280px;
+  max-width: 320px;
 }
 
 .kanban-card {
-  @apply glass-card-hover p-4 cursor-grab active:cursor-grabbing;
+  background-color: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 1rem;
+  padding: 1rem;
+  cursor: grab;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+}
+
+.kanban-card:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.kanban-card:active {
+  cursor: grabbing;
 }
 
 /* Priority badges */
 .priority-high {
-  @apply text-rose-400 bg-rose-500/10 border-rose-500/20;
+  color: #f87171;
+  background-color: rgba(244, 63, 94, 0.1);
+  border: 1px solid rgba(244, 63, 94, 0.2);
 }
 
 .priority-medium {
-  @apply text-amber-400 bg-amber-500/10 border-amber-500/20;
+  color: #fbbf24;
+  background-color: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.2);
 }
 
 .priority-low {
-  @apply text-emerald-400 bg-emerald-500/10 border-emerald-500/20;
+  color: #34d399;
+  background-color: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.2);
 }
 
 /* Gradient text */
 .gradient-text {
-  @apply bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent;
+  background-image: linear-gradient(to right, #60a5fa, #a78bfa);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 /* Noise texture overlay */
@@ -156,24 +209,31 @@
 
 /* Selection */
 ::selection {
-  @apply bg-blue-500/30 text-white;
+  background-color: rgba(59, 130, 246, 0.3);
+  color: white;
 }
 
 /* Focus styles */
 :focus-visible {
-  @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  outline: none;
+  box-shadow: 0 0 0 2px hsl(var(--ring)), 0 0 0 4px hsl(var(--background));
 }
 
 /* Mobile optimizations */
 @media (max-width: 640px) {
   .glass-card {
-    @apply rounded-xl;
+    border-radius: 0.75rem;
+  }
+  .glass-card-hover {
+    border-radius: 0.75rem;
   }
 }
 
 /* Smooth transitions */
 * {
-  @apply transition-colors duration-150;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
 }
 
 /* Hide scrollbar but keep functionality */

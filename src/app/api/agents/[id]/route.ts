@@ -5,8 +5,9 @@ const agents = [
   { id: "2", name: "Bob", status: "idle", currentTask: null, lastOutput: "Task completed: Documentation updated", model: "gpt-4", costToday: 8.20, tokensUsed: 89000, specialty: ["Writing", "Analysis"], config: { temperature: 0.5, maxTokens: 2000 } },
 ];
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
-  const agent = agents.find(a => a.id === params.id);
+export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const agent = agents.find(a => a.id === id);
   
   if (!agent) {
     return NextResponse.json({ error: "Agent not found" }, { status: 404 });

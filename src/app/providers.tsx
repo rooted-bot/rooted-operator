@@ -2,11 +2,18 @@
 
 import { ConvexProvider, ConvexReactClient } from "convex/react";
 import { ThemeProvider } from "next-themes";
-import { ReactNode } from "react";
-
-const convex = new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
+import { ReactNode, useMemo } from "react";
 
 export function Providers({ children }: { children: ReactNode }) {
+  const convex = useMemo(() => {
+    const url = process.env.NEXT_PUBLIC_CONVEX_URL;
+    if (!url) {
+      // Return a dummy client for build time
+      return new ConvexReactClient("https://dummy.convex.site");
+    }
+    return new ConvexReactClient(url);
+  }, []);
+
   return (
     <ThemeProvider
       attribute="class"

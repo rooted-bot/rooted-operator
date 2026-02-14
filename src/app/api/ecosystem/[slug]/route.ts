@@ -11,8 +11,9 @@ const products = [
   { id: "8", name: "Discord Bot", description: "Community management automation", category: "Integrations", status: "beta", health: "warning", users: 3200, revenue: 6000, version: "1.2.0", uptime: "98.00%", requestsPerDay: 67000, avgResponseTime: "420ms", errorRate: "0.08%" },
 ];
 
-export async function GET(request: Request, { params }: { params: { slug: string } }) {
-  const product = products.find(p => p.id === params.slug);
+export async function GET(request: Request, { params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const product = products.find(p => p.id === slug);
   
   if (!product) {
     return NextResponse.json({ error: "Product not found" }, { status: 404 });

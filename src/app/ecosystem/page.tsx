@@ -91,7 +91,7 @@ export default function EcosystemPage() {
     } catch (error) {
       console.error("Failed to fetch products:", error);
       // Fallback data
-      const fallback = [
+      const fallback: Product[] = [
         { id: "1", name: "AI Assistant", description: "Conversational AI for customer support", category: "AI Tools", status: "active", health: "healthy", users: 12500, revenue: 45000, version: "2.3.1" },
         { id: "2", name: "Data Pipeline", description: "Real-time data processing and analytics", category: "Platform", status: "active", health: "healthy", users: 8200, revenue: 32000, version: "1.8.0" },
         { id: "3", name: "Slack Bot", description: "Automated team notifications and commands", category: "Integrations", status: "active", health: "warning", users: 5600, revenue: 12000, version: "3.1.2" },

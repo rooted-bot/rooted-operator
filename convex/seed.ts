@@ -3,7 +3,7 @@ import { internalAction } from "./_generated/server";
 
 // Seed script for initial data
 export const seed = internalAction({
-  handler: async (ctx) => {
+  handler: async (ctx: any) => {
     const now = Date.now();
 
     // Seed activities
