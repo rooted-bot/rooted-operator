@@ -92,23 +92,19 @@ export function TasksCalendar() {
       <Card className="h-[600px]">
         <CardHeader>
           <Skeleton className="h-6 w-48" />
-        <Skeleton className="h-10 w-64 mt-2" />
-        <Skeleton className="h-10 w-48 mt-2" />
-        <Skeleton className="h-8 w-32 mt-2" />
-        <Skeleton className="h-6 w-40 mt-2" />
-        <Skeleton className="h-10 w-72 mt-2" />
-        <Skeleton className="h-6 w-56 mt-2" />
-        <Skeleton className="h-8 w-48 mt-2" />
-        <Skeleton className="h-10 w-64 mt-2" />
-        <Skeleton className="h-6 w-36 mt-2" />
-        <Skeleton className="h-10 w-80 mt-2" />
-        <Skeleton className="h-8 w-44 mt-2" />
-        <Skeleton className="h-6 w-52 mt-2" />
-        <Skeleton className="h-10 w-68 mt-2" />
-        <Skeleton className="h-6 w-40 mt-2" />
-        <Skeleton className="h-8 w-60 mt-2" />
-        <Skeleton className="h-10 w-76 mt-2" />
-        <Skeleton className="h-6 w-48 mt-2" />
+        </CardHeader>
+        <CardContent className="space-y-2">
+          <Skeleton className="h-10 w-64" />
+          <Skeleton className="h-10 w-48" />
+          <Skeleton className="h-8 w-32" />
+          <Skeleton className="h-6 w-40" />
+          <Skeleton className="h-10 w-72" />
+          <Skeleton className="h-6 w-56" />
+          <Skeleton className="h-8 w-48" />
+          <Skeleton className="h-10 w-64" />
+          <Skeleton className="h-6 w-36" />
+          <Skeleton className="h-10 w-80" />
+        </CardContent>
       </Card>
     );
   }
