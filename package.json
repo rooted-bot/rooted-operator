@@ -38,7 +38,8 @@
     "react-dom": "^19.0.0-rc",
     "recharts": "^2.12.7",
     "tailwind-merge": "^2.4.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "autoprefixer": "^10.4.20"
   },
   "devDependencies": {
     "@types/node": "^20",
