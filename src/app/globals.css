@@ -1,0 +1,187 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --radius: 1rem;
+  --background: 0 0% 4%;
+  --foreground: 0 0% 98%;
+  --card: 0 0% 6%;
+  --card-foreground: 0 0% 98%;
+  --popover: 0 0% 6%;
+  --popover-foreground: 0 0% 98%;
+  --primary: 217 91% 60%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 0 0% 12%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 0 0% 12%;
+  --muted-foreground: 0 0% 60%;
+  --accent: 217 91% 60%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 0 0% 15%;
+  --input: 0 0% 15%;
+  --ring: 217 91% 60%;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Glass card effect */
+.glass-card {
+  @apply bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-2xl;
+}
+
+.glass-card-hover {
+  @apply glass-card transition-all duration-200 hover:bg-white/[0.05] hover:border-white/[0.1];
+}
+
+/* Terminal styles */
+.terminal {
+  @apply font-mono text-xs leading-relaxed;
+}
+
+.terminal-line {
+  @apply flex items-start gap-2;
+}
+
+.terminal-timestamp {
+  @apply text-muted-foreground shrink-0;
+}
+
+.terminal-level {
+  @apply shrink-0 font-medium;
+}
+
+.terminal-level.info {
+  @apply text-blue-400;
+}
+
+.terminal-level.success {
+  @apply text-emerald-400;
+}
+
+.terminal-level.warn {
+  @apply text-amber-400;
+}
+
+.terminal-level.error {
+  @apply text-rose-400;
+}
+
+/* Status indicators */
+.status-dot {
+  @apply w-2 h-2 rounded-full;
+}
+
+.status-dot.online {
+  @apply bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)];
+}
+
+.status-dot.idle {
+  @apply bg-amber-500;
+}
+
+.status-dot.offline {
+  @apply bg-slate-500;
+}
+
+.status-dot.active {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Kanban styles */
+.kanban-column {
+  @apply flex flex-col gap-3 min-w-[280px] max-w-[320px];
+}
+
+.kanban-card {
+  @apply glass-card-hover p-4 cursor-grab active:cursor-grabbing;
+}
+
+/* Priority badges */
+.priority-high {
+  @apply text-rose-400 bg-rose-500/10 border-rose-500/20;
+}
+
+.priority-medium {
+  @apply text-amber-400 bg-amber-500/10 border-amber-500/20;
+}
+
+.priority-low {
+  @apply text-emerald-400 bg-emerald-500/10 border-emerald-500/20;
+}
+
+/* Gradient text */
+.gradient-text {
+  @apply bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent;
+}
+
+/* Noise texture overlay */
+.noise-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.03;
+  pointer-events: none;
+}
+
+/* Selection */
+::selection {
+  @apply bg-blue-500/30 text-white;
+}
+
+/* Focus styles */
+:focus-visible {
+  @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+}
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+  .glass-card {
+    @apply rounded-xl;
+  }
+}
+
+/* Smooth transitions */
+* {
+  @apply transition-colors duration-150;
+}
+
+/* Hide scrollbar but keep functionality */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
