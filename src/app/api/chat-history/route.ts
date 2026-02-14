@@ -1,29 +1,13 @@
 import { NextResponse } from "next/server";
-import { readFile, readdir } from "fs/promises";
-import { join } from "path";
-import { homedir } from "os";
 
-const workspacePath = join(homedir(), ".openclaw", "workspace");
+const messages = [
+  { id: "1", content: "Hey team, the new feature is ready for review!", sender: "Alice", isAgent: true, timestamp: "10:30 AM", avatar: null },
+  { id: "2", content: "Great! I'll take a look at it now.", sender: "You", isAgent: false, timestamp: "10:32 AM", avatar: null },
+  { id: "3", content: "Found a small issue with the auth flow. Should be a quick fix.", sender: "Alice", isAgent: true, timestamp: "10:45 AM", avatar: null },
+  { id: "4", content: "Thanks for catching that. Let me know when it's updated.", sender: "You", isAgent: false, timestamp: "10:46 AM", avatar: null },
+  { id: "5", content: "Fixed! The token validation was missing a check. Deployed to staging.", sender: "Alice", isAgent: true, timestamp: "11:02 AM", avatar: null },
+];
 
 export async function GET() {
-  try {
-    // Read all .jsonl files from transcripts directory
-    const transcriptsDir = join(workspacePath, "transcripts");
-    const files = await readdir(transcriptsDir).catch(() => []);
-    
-    const transcripts = [];
-    for (const file of files.filter(f => f.endsWith(".jsonl"))) {
-      try {
-        const content = await readFile(join(transcriptsDir, file), "utf-8");
-        const lines = content.split("\n").filter(Boolean);
-        transcripts.push(...lines.map(line => JSON.parse(line)));
-      } catch {
-        // Skip invalid files
-      }
-    }
-    
-    return NextResponse.json({ transcripts });
-  } catch (error) {
-    return NextResponse.json({ transcripts: [] }, { status: 500 });
-  }
+  return NextResponse.json({ messages });
 }

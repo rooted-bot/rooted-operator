@@ -1,32 +1,18 @@
 import { NextResponse } from "next/server";
-import { appendFile, mkdir } from "fs/promises";
-import { join } from "path";
-import { homedir } from "os";
-
-const workspacePath = join(homedir(), ".openclaw", "workspace");
 
 export async function POST(request: Request) {
-  try {
-    const body = await request.json();
-    
-    const message = {
-      id: Date.now().toString(),
-      ...body,
-      timestamp: new Date().toISOString(),
-    };
-    
-    // Ensure queue directory exists
-    const queueDir = join(workspacePath, "queue");
-    await mkdir(queueDir, { recursive: true }).catch(() => {});
-    
-    // Append to chat queue
-    await appendFile(
-      join(queueDir, "messages.jsonl"),
-      JSON.stringify(message) + "\n"
-    );
-    
-    return NextResponse.json({ success: true, message });
-  } catch (error) {
-    return NextResponse.json({ error: "Failed to send message" }, { status: 500 });
-  }
+  const body = await request.json();
+  
+  // Simulate processing time
+  await new Promise(resolve => setTimeout(resolve, 500));
+  
+  const response = {
+    id: Date.now().toString(),
+    content: `Received: "${body.message}". Processing your request...`,
+    sender: "System",
+    isAgent: true,
+    timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+  };
+  
+  return NextResponse.json({ message: response }, { status: 201 });
 }
