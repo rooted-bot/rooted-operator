@@ -1,13 +1,64 @@
 import { NextResponse } from "next/server";
+import { execSync } from 'child_process';
+import { readFileSync } from 'fs';
+import { join } from 'path';
 
-const agents = [
-  { id: "1", name: "Alice", status: "active", currentTask: "Code review for PR #234", lastOutput: "Found 3 potential issues in authentication.ts", model: "claude-3-opus", costToday: 12.45, tokensUsed: 125000, specialty: ["Code Review", "Architecture"] },
-  { id: "2", name: "Bob", status: "idle", currentTask: null, lastOutput: "Task completed: Documentation updated", model: "gpt-4", costToday: 8.20, tokensUsed: 89000, specialty: ["Writing", "Analysis"] },
-  { id: "3", name: "Charlie", status: "active", currentTask: "Customer support ticket #4521", lastOutput: "Drafting response with technical details...", model: "claude-3-sonnet", costToday: 5.80, tokensUsed: 67000, specialty: ["Support", "Communication"] },
-  { id: "4", name: "Diana", status: "offline", currentTask: null, lastOutput: "Agent shutdown: Maintenance mode", model: "gpt-4-turbo", costToday: 0, tokensUsed: 0, specialty: ["Research", "Data Analysis"] },
-  { id: "5", name: "Eve", status: "active", currentTask: "Content generation for newsletter", lastOutput: "Generated 3 blog post ideas", model: "claude-3-haiku", costToday: 2.30, tokensUsed: 34000, specialty: ["Content", "Creative"] },
-];
+interface Agent {
+  id: string;
+  name: string;
+  status: "online" | "idle" | "offline";
+  model: string;
+  lastActivity: string;
+  task: string;
+  tokensUsed: number;
+  costToday: number;
+}
+
+function getRecentActivity(): { task: string; time: string } {
+  try {
+    // Check recent memory files for activity
+    const memoryPath = "/Users/travisassitant/.openclaw/workspace/memory";
+    const today = new Date().toISOString().split('T')[0];
+    const memoryFile = join(memoryPath, `${today}.md`);
+    
+    try {
+      const content = readFileSync(memoryFile, 'utf-8');
+      const lines = content.split('\n').filter(l => l.trim() && !l.startsWith('#'));
+      const lastActivity = lines.slice(-3)[0] || "Managing projects";
+      return { task: lastActivity.substring(0, 50), time: "now" };
+    } catch {
+      return { task: "Monitoring systems", time: "now" };
+    }
+  } catch {
+    return { task: "Active", time: "now" };
+  }
+}
+
+function getActiveSessions(): number {
+  try {
+    // This would ideally check actual agent sessions
+    return 1; // Just main agent for now
+  } catch {
+    return 1;
+  }
+}
 
 export async function GET() {
-  return NextResponse.json({ agents });
+  const activity = getRecentActivity();
+  const sessionCount = getActiveSessions();
+  
+  const agents: Agent[] = [
+    {
+      id: "main",
+      name: "OpenClaw Agent",
+      status: "online",
+      model: "moonshot/kimi-k2.5",
+      lastActivity: activity.time,
+      task: activity.task,
+      tokensUsed: 0,
+      costToday: 0
+    }
+  ];
+
+  return NextResponse.json({ agents, count: sessionCount });
 }

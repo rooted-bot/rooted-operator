@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Activity, Cpu, HardDrive, Zap } from "lucide-react";
+import { Activity, Cpu, HardDrive, Zap, Server } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -11,6 +11,8 @@ interface SystemStats {
   memory: number;
   disk: number;
   uptime: string;
+  nodeVersion: string;
+  projects: number;
 }
 
 export function SystemHealthCard() {
@@ -18,40 +20,43 @@ export function SystemHealthCard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate fetching system stats
-    setTimeout(() => {
-      setStats({
-        cpu: 34,
-        memory: 62,
-        disk: 45,
-        uptime: "3d 12h 45m",
+    fetch('/api/system-state')
+      .then(res => res.json())
+      .then(data => {
+        setStats({
+          cpu: 34,
+          memory: 62,
+          disk: 45,
+          uptime: data.uptime || "Unknown",
+          nodeVersion: data.nodeVersion || "v18",
+          projects: data.projects || 5
+        });
+        setLoading(false);
+      })
+      .catch(() => {
+        setStats({
+          cpu: 0,
+          memory: 0,
+          disk: 0,
+          uptime: "Unknown",
+          nodeVersion: "-",
+          projects: 0
+        });
+        setLoading(false);
       });
-      setLoading(false);
-    }, 800);
-
-    // Simulate real-time updates
-    const interval = setInterval(() => {
-      setStats(prev => prev ? {
-        ...prev,
-        cpu: Math.min(100, Math.max(10, prev.cpu + (Math.random() - 0.5) * 10)),
-        memory: Math.min(100, Math.max(30, prev.memory + (Math.random() - 0.5) * 5)),
-      } : null);
-    }, 3000);
-
-    return () => clearInterval(interval);
   }, []);
 
   if (loading) {
     return (
-      <Card>
+      <Card className="bg-white/[0.03] backdrop-blur-xl border-white/10">
         <CardHeader className="pb-3">
-          <Skeleton className="h-5 w-32" />
+          <Skeleton className="h-5 w-32 bg-white/10" />
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            <Skeleton className="h-8 w-full" />
-            <Skeleton className="h-8 w-full" />
-            <Skeleton className="h-8 w-full" />
+            <Skeleton className="h-8 w-full bg-white/10" />
+            <Skeleton className="h-8 w-full bg-white/10" />
+            <Skeleton className="h-8 w-full bg-white/10" />
           </div>
         </CardContent>
       </Card>
@@ -59,9 +64,9 @@ export function SystemHealthCard() {
   }
 
   return (
-    <Card>
+    <Card className="bg-white/[0.03] backdrop-blur-xl border-white/10">
       <CardHeader className="pb-3">
-        <CardTitle className="flex items-center gap-2">
+        <CardTitle className="flex items-center gap-2 text-white">
           <Activity className="w-4 h-4 text-emerald-400" />
           System Health
         </CardTitle>
@@ -71,34 +76,31 @@ export function SystemHealthCard() {
           <div className="space-y-2">
             <div className="flex items-center justify-between text-xs">
               <div className="flex items-center gap-2 text-white/70">
-                <Cpu className="w-3.5 h-3.5" />
-                CPU
+                <Server className="w-3.5 h-3.5" />
+                Active Projects
               </div>
-              <span className="text-white">{stats?.cpu.toFixed(0)}%</span>
+              <span className="text-white font-medium">{stats?.projects}</span>
             </div>
-            <Progress value={stats?.cpu} className="h-1" />
+          </div>
+          
+          <div className="space-y-2">
+            <div className="flex items-center justify-between text-xs">
+              <div className="flex items-center gap-2 text-white/70">
+                <Cpu className="w-3.5 h-3.5" />
+                Status
+              </div>
+              <span className="text-emerald-400">Operational</span>
+            </div>
           </div>
           
           <div className="space-y-2">
             <div className="flex items-center justify-between text-xs">
               <div className="flex items-center gap-2 text-white/70">
                 <Zap className="w-3.5 h-3.5" />
-                Memory
+                Node.js
               </div>
-              <span className="text-white">{stats?.memory.toFixed(0)}%</span>
+              <span className="text-white/70">{stats?.nodeVersion}</span>
             </div>
-            <Progress value={stats?.memory} className="h-1" />
-          </div>
-          
-          <div className="space-y-2">
-            <div className="flex items-center justify-between text-xs">
-              <div className="flex items-center gap-2 text-white/70">
-                <HardDrive className="w-3.5 h-3.5" />
-                Disk
-              </div>
-              <span className="text-white">{stats?.disk}%</span>
-            </div>
-            <Progress value={stats?.disk} className="h-1" />
           </div>
 
           <div className="pt-2 border-t border-white/[0.06]">
